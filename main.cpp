@@ -21,25 +21,12 @@
 #include "mbed.h" //library imports
 #include "arm_book_lib.h"
 
-//=====[Defines]===============================================================
-
-
-
-//=====[Declaration and initialization of public global objects]===============
-
-
-
-//=====[Declaration and initialization of public global variables]=============
-
-
-//=====[Declarations (prototypes) of public functions]=========================
-
-
-
 //=====[Main function, the program entry point after power on or reset]========
 
-
-
-
-//=====[Implementation of global functions]====================================
-
+int main()
+{
+    void systemInit();
+    while (true) {
+        void systemUpdate();
+    }
+}
