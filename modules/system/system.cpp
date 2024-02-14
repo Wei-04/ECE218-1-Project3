@@ -54,7 +54,7 @@ void systemUpdate()
     displayStringWrite("Mode:");
     displayCharPositionWrite(6, 0);
     displayStringWrite("replace"); //replace with function output from wiper system module
-    displayCharPositionWrite(0, 1);
+    displayCharPositionWrite(0, 1); //testing
     displayStringWrite("Interval:");
     displayCharPositionWrite(10, 1);
     displayStringWrite("replace");
