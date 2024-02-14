@@ -37,6 +37,9 @@
 
 AnalogIn mode_dial(A1);
 AnalogIn freq_dial(A0);
+
+PwmOut servo(PE_8);
+
 static int md_state = 0;
 static int fd_state = 0;
 
