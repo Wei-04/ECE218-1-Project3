@@ -3,14 +3,12 @@
 * @authors Harmon Cleary, Weiheng He
 * @section genDesc General Description
 *
-* This module should be in charge of and control the ignition system of the car. This includes only allowing ignition
-* when the driver is occupying his seat, and keeping the engine on even after the driver has left. Finally, the
-* current state of the system will be represented by the blue LED on the Nucleo Board.
+* This module is used to consolidate our display with the outputs and states of the wiper system.
 *
 * @section changelog Changelog
 * | Date | Description |
 * |:----------:|:-----------------------------------------------|
-* | 02/14/2024 | First version of ignition system |
+* | 02/14/2024 | First version of our display modes |
 * 
 *
 */
@@ -21,8 +19,8 @@
 #include "mbed.h" //library imports
 #include "arm_book_lib.h"
 
-#include "ignition_system.h"
-#include "display_mode.h"
+#include "wiper_system.h"
+#include "display.h"
 
 //=====[Declaration of private defines]========================================
 
@@ -40,16 +38,21 @@
 
 //=====[Implementations of public functions]===================================
 
-void systemInit()
+void displayModeInit()
 {
-    void ignitionInit();
-    void displayModeInit();
+    void displayInit();
 }
 
-void systemUpdate()
+void displayMode()
 {
-    engineUpdate();
-    displayMode();
+    displayCharPositionWrite(0, 0);
+    displayStringWrite("Mode:");
+    displayCharPositionWrite(6, 0);
+    displayStringWrite("replace"); //replace with function output from wiper system module
+    displayCharPositionWrite(0, 1); 
+    displayStringWrite("Interval:");
+    displayCharPositionWrite(10, 1);
+    displayStringWrite("replace");
 }
 
 //=====[Implementations of private functions]==================================
