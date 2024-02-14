@@ -49,6 +49,15 @@ void systemInit()
 void systemUpdate()
 {
     bool engineUpdate();
+
+    displayCharPositionWrite(0, 0);
+    displayStringWrite("Mode:");
+    displayCharPositionWrite(6, 0);
+    displayStringWrite("replace"); //replace with function output from wiper system module
+    displayCharPositionWrite(0, 1);
+    displayStringWrite("Interval:");
+    displayCharPositionWrite(10, 1);
+    displayStringWrite("replace");
 }
 
 //=====[Implementations of private functions]==================================
