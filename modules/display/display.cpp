@@ -1,3 +1,20 @@
+/*! @mainpage Display Control
+* @date Wednesday, February 14, 2024
+* @authors Harmon Cleary, Weiheng He
+* @section genDesc General Description
+*
+* This module controls the dashboard display to show the current wiper mode and INT interval. The modes
+* and intervals should be displayed and updated even when the wiper is not active.
+*
+* @section changelog Changelog
+* | Date | Description |
+* |:----------:|:-----------------------------------------------|
+* | 02/14/2024 | First version of display system |
+* 
+*
+*/
+
+
 //=====[Libraries]=============================================================
 
 #include "mbed.h"
