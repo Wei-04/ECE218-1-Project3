@@ -3,7 +3,7 @@
 * @authors Harmon Cleary, Weiheng He
 * @section genDesc General Description
 *
-* This module controls the dashboard display to show the current wiper mode and INT interval. The modes
+* This module controls the dashboard display to show the current wiper mode and INT interval settings. The modes
 * and intervals should be displayed and updated even when the wiper is not active.
 *
 * @section changelog Changelog
