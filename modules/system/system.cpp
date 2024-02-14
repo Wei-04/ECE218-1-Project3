@@ -22,6 +22,7 @@
 #include "arm_book_lib.h"
 
 #include "ignition_system.h"
+#include "display.h"
 
 //=====[Declaration of private defines]========================================
 
@@ -42,6 +43,7 @@
 void systemInit()
 {
     void ignitionInit();
+    void displayInit();
 }
 
 void systemUpdate()
