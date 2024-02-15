@@ -33,6 +33,9 @@
 #define FD_TH2  0.667
 #define FD_HYST 0.05
 
+#define PWM_MIN 0.05
+#define PWM_MAX 0.1
+
 //=====[Declaration and initialization of public global objects]===============
 
 AnalogIn mode_dial(A1);
@@ -47,11 +50,12 @@ static int fd_state = 0;
 
 //=====[Declarations (prototypes) of public functions]=========================
 
-void updatePotReading();
+
+static void updatePotReading();
 
 //=====[Implementation of global functions]====================================
 
-void updatePotReading() {
+static void updatePotReading() {
     float md_r = mode_dial.read();
     switch (md_state) {
         case 0:
@@ -83,5 +87,4 @@ void updatePotReading() {
             if (fd_r < MD_TH3 - MD_HYST) md_state = 2;
             break;
     }
-
 };
