@@ -24,14 +24,14 @@
 
 //=====[Defines]===============================================================
 
-#define MD_TH1  0.25
-#define MD_TH2  0.50
-#define MD_TH3  0.75
-#define MD_HYST 0.05
+#define MD_TH1  0.25 //LO
+#define MD_TH2  0.50 //HI
+#define MD_TH3  0.75 //INT
+#define MD_HYST 0.05 //OFF
 
-#define FD_TH1  0.333
-#define FD_TH2  0.667
-#define FD_HYST 0.05
+#define FD_TH1  0.333 //SHORT
+#define FD_TH2  0.667 //MEDIUM
+#define FD_HYST 0.05 //LONG
 
 //=====[Declaration and initialization of public global objects]===============
 
@@ -51,7 +51,7 @@ void updatePotReading();
 
 //=====[Implementation of global functions]====================================
 
-void updatePotReading() {
+void updatePotReading() { //LO HI INT OFF, 0 1 2 3
     float md_r = mode_dial.read();
     switch (md_state) {
         case 0:
@@ -70,7 +70,7 @@ void updatePotReading() {
             break;
     }
     if (md_state != 2) return;
-    float fd_r = mode_dial.read();
+    float fd_r = mode_dial.read(); //0 1 2, short med long
     switch (fd_state) {
         case 0:
             if (fd_r > FD_TH1 + FD_HYST) md_state = 1;  
