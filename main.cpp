@@ -29,12 +29,14 @@
 #include "mbed.h" //library imports
 #include "arm_book_lib.h"
 
+#include "system.h" //our main module
+
 //=====[Main function, the program entry point after power on or reset]========
 
-int main()
+int main() //test comment, ignore 1
 {
-    void systemInit();
+    systemInit();
     while (true) {
-        void systemUpdate();
+        systemUpdate();
     }
 }

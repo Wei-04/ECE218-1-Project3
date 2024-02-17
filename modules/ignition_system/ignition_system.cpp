@@ -34,9 +34,7 @@ DigitalOut ignitionLED(LED2); // Object associated with sucessful igntion
 
 //=====[Declarations (prototypes) of public functions]=========================
 
-void inputsInit(); //Initializes inputs: driverOccupancy = OFF
-
-void outputsInit(); //Initializes outputs: ignitionLED = OFF
+void ignitionInit(); //initializes inputs and outputs
 
 bool engineUpdate(); //controls the engine state, returns the current engine state
 
