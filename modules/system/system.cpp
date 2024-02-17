@@ -27,6 +27,8 @@
 
 //=====[Declaration of private defines]========================================
 
+#define SYSTEM_TIME_INCREMENT_MS   10
+
 //=====[Declaration of private data types]=====================================
 
 //=====[Declaration and initialization of public global objects]===============
