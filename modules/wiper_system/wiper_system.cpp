@@ -21,6 +21,7 @@
 
 #include "mbed.h" //library imports
 #include "arm_book_lib.h"
+#include "system.h"
 
 //=====[Defines]===============================================================
 
@@ -35,6 +36,11 @@
 
 #define PWM_MIN 0.05
 #define PWM_MAX 0.1
+#define ANGLE_MAX 67
+
+#define DPS_LO = 120.0
+#define DPS_HI = 180.0
+
 
 //=====[Declaration and initialization of public global objects]===============
 
@@ -42,31 +48,41 @@ AnalogIn mode_dial(A1);
 AnalogIn freq_dial(A0);
 
 PwmOut servo(PE_8);
+static float w_increment_lo = (PWM_MAX - PWM_MIN) / (ANGLE_MAX / 120.0) * .01;
+static float w_increment_hi = (PWM_MAX - PWM_MIN) / (ANGLE_MAX / 180.0) * .01;
 
 static int md_state = 0;
 static int fd_state = 0;
+static int acc_time_ms = 0;
+
+typedef enum wiperState {
+    W_STOP,
+    W_RISE,
+    W_FALL
+} wiperState_t;
+
+static wiperState_t w_state = W_STOP;
 
 //=====[Declaration and initialization of public global variables]=============
 
 //=====[Declarations (prototypes) of public functions]=========================
 
-
 static void updatePotReading();
+
+void initWiperSystem();
+void updateWiperSystem();
 
 //=====[Implementation of global functions]====================================
 
-<<<<<<< HEAD
-static void updatePotReading() {
-=======
-void updatePotReading() { //LO HI INT OFF, 0 1 2 3
->>>>>>> 0db68d251340ff1698b57e47bb18cc53136c1f81
+static void updatePotReading() { //LO HI INT OFF, 0 1 2 3
+
     float md_r = mode_dial.read();
     switch (md_state) {
         case 0:
             if (md_r > MD_TH1 + MD_HYST) md_state = 1;  
             break;
         case 1:
-            if (md_r > MD_TH2 + MD_HYST) md_state = 2;
+            if (md_r > MD_TH2 + MD_HYST) {acc_time_ms = 0; md_state = 2;}
             if (md_r < MD_TH1 - MD_HYST) md_state = 0;
             break;
         case 2:
@@ -74,21 +90,62 @@ void updatePotReading() { //LO HI INT OFF, 0 1 2 3
             if (md_r < MD_TH2 - MD_HYST) md_state = 1;
             break;
         case 3:
-            if (md_r < MD_TH3 - MD_HYST) md_state = 2;
+            if (md_r < MD_TH3 - MD_HYST) {acc_time_ms = 0; md_state = 2;}
             break;
     }
     if (md_state != 2) return;
     float fd_r = mode_dial.read(); //0 1 2, short med long
     switch (fd_state) {
         case 0:
-            if (fd_r > FD_TH1 + FD_HYST) md_state = 1;  
+            if (fd_r > FD_TH1 + FD_HYST) {acc_time_ms = 0; md_state = 1;}  
             break;
         case 1:
-            if (fd_r > FD_TH2 + FD_HYST) md_state = 2;
-            if (fd_r < FD_TH1 - FD_HYST) md_state = 0;
+            if (fd_r > FD_TH2 + FD_HYST) acc_time_ms = 0; {md_state = 2;}
+            if (fd_r < FD_TH1 - FD_HYST) {acc_time_ms = 0; md_state = 0;}
             break;
         case 2:
-            if (fd_r < MD_TH3 - MD_HYST) md_state = 2;
+            if (fd_r < MD_TH3 - MD_HYST) {acc_time_ms = 0; md_state = 2;}
             break;
     }
 };
+
+void updateWiperSystem() {
+    updatePotReading();
+    switch (md_state) {
+        case 0:
+            if (w_state == W_RISE) {
+                servo.write(servo + w_increment_lo);
+                if (servo > PWM_MAX) {
+                    w_state = W_FALL;
+                }
+            }
+            else {
+                servo.write(w_increment_lo);
+                if (servo < PWM_MIN) {
+                    w_state = W_RISE;
+                }
+            }
+        case 1:
+            if (w_state == W_RISE) {
+                servo.write(WS_INCREMENT_HI);
+                if (servo > PWM_MAX) {
+                    w_state = W_FALL;
+                }
+            }
+            else {
+                servo.write(servo - WS_INCREMENT_HI);
+                if (servo.read() < PWM_MIN) {
+                    w_state = W_RISE;
+                }
+            }
+            break;
+        case 2:
+
+        case 3:
+            if (servo > PWM_MIN) {
+                servo.write(PWM_MIN);
+            }
+            break;
+
+    }
+}

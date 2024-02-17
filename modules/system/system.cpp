@@ -23,6 +23,7 @@
 
 #include "ignition_system.h"
 #include "display_mode.h"
+#include "wiper_system.h"
 
 //=====[Declaration of private defines]========================================
 
@@ -50,6 +51,8 @@ void systemUpdate()
 {
     engineUpdate();
     displayMode();
+    updateWiperSystem();
+    delay(SYSTEM_TIME_INCREMENT_MS);
 }
 
 //=====[Implementations of private functions]==================================
