@@ -33,7 +33,7 @@
 
 //=====[Main function, the program entry point after power on or reset]========
 
-int main() //test comment, ignore
+int main() //test comment, ignore 1
 {
     systemInit();
     while (true) {
