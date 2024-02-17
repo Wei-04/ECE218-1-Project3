@@ -45,8 +45,8 @@
 
 void systemInit()
 {
-    void ignitionInit();
-    void displayModeInit();
+    ignitionInit();
+    displayModeInit();
 }
 
 void systemUpdate()
@@ -54,7 +54,7 @@ void systemUpdate()
     engineUpdate();
     displayMode();
     updateWiperSystem();
-    delay(SYSTEM_TIME_INCREMENT_MS);
+    delay(10);
 }
 
 //=====[Implementations of private functions]==================================
