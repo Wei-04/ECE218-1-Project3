@@ -74,6 +74,10 @@ void updateWiperSystem();
 
 //=====[Implementation of global functions]====================================
 
+void initWiperSystem() {
+    servo.period(.02);
+}
+
 static void updatePotReading() { //LO HI INT OFF, 0 1 2 3
 
     float md_r = mode_dial.read();
@@ -120,27 +124,27 @@ void updateWiperSystem() {
                 }
             }
             else {
-                servo.write(w_increment_lo);
+                servo.write(servo - w_increment_lo);
                 if (servo < PWM_MIN) {
                     w_state = W_RISE;
                 }
             }
         case 1:
             if (w_state == W_RISE) {
-                servo.write(WS_INCREMENT_HI);
-                if (servo > PWM_MAX) {
-                    w_state = W_FALL;
+              servo.write(servo + w_increment_hi);
+              if (servo > PWM_MAX) {
+                w_state = W_FALL;
                 }
             }
             else {
-                servo.write(servo - WS_INCREMENT_HI);
+                servo.write(servo - w_increment_hi);
                 if (servo.read() < PWM_MIN) {
                     w_state = W_RISE;
                 }
             }
             break;
         case 2:
-
+            break;
         case 3:
             if (servo > PWM_MIN) {
                 servo.write(PWM_MIN);
