@@ -42,14 +42,15 @@
 
 void systemInit()
 {
-    void ignitionInit();
-    void displayModeInit();
+    ignitionInit();
+    displayModeInit();
 }
 
 void systemUpdate()
 {
     engineUpdate();
     displayMode();
+    delay(10);
 }
 
 //=====[Implementations of private functions]==================================
