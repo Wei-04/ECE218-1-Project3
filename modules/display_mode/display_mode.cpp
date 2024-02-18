@@ -46,14 +46,10 @@ void displayModeInit() //initializes our display
 
 void displayMode() //this function updates our display with the current mode and interval
 {
-    //displayCharPositionWrite(0, 0); 
-    //displayStringWrite("                ");
-    //displayCharPositionWrite(0, 1); 
-    //d/isplayStringWrite("                ");
-    displayCharPositionWrite(0, 0); 
+    displayCharPositionWrite(0, 0); //writing the mode
     displayStringWrite("Mode:");
     displayCharPositionWrite(5, 0);
-    switch (getMode()) {
+    switch (getMode()) { //using cases to determine our mode
         case 0:
         displayStringWrite("LO  ");
         break;
@@ -68,11 +64,10 @@ void displayMode() //this function updates our display with the current mode and
         break;
     }
 
-     //replace with function output from wiper system module
-    displayCharPositionWrite(0, 1); 
+    displayCharPositionWrite(0, 1); //writing our interval
     displayStringWrite("Interval:");
     displayCharPositionWrite(9, 1);
-    switch (getFreq()) {
+    switch (getFreq()) { //using cases to determine our interval
         case 0:
         displayStringWrite("SHORT  ");
         break;

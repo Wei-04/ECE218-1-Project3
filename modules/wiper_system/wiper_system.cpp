@@ -12,7 +12,7 @@
 * | Date | Description |
 * |:----------:|:-----------------------------------------------|
 * | 02/14/2024 | First version of the wiper system |
-* 
+* | 02/14/2024 | Final version of the wiper system |
 *
 */
 

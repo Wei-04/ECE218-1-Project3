@@ -9,8 +9,9 @@
 * @section changelog Changelog
 * | Date | Description |
 * |:----------:|:-----------------------------------------------|
-* | 02/14/2024 | First version of ignition system |
-* 
+* | 02/14/2024 | First version of system |
+* | 02/15/2024 | Added display module |
+* | 02/17/2024 | Added wiper module |
 *
 */
 
@@ -50,11 +51,11 @@ void systemInit() //our initializations
 
 void systemUpdate() //our update functions which will loop
 {
-    engineUpdate();
-    displayMode();
-    updateWiperSystem();
+    engineUpdate(); //updates engine state
+    displayMode(); //updates our display on the current wiper mode and interval
+    updateWiperSystem(); //controls the wipers
 
-    delay(10);
+    delay(SYSTEM_TIME_INCREMENT_MS);
 }
 
 //=====[Implementations of private functions]==================================
