@@ -21,6 +21,7 @@
 
 #include "mbed.h" //library imports
 #include "arm_book_lib.h"
+#include "system.h"
 
 //=====[Defines]===============================================================
 
@@ -33,6 +34,17 @@
 #define FD_TH2  0.667 //MEDIUM
 #define FD_HYST 0.05 //LONG
 
+#define PWM_MIN 0.05
+#define PWM_MAX 0.1
+#define ANGLE_MAX 67.0
+
+#define DPS_LO 120.0
+#define DPS_HI 180.0
+
+#define W_INC_LO (PWM_MAX - PWM_MIN) / (ANGLE_MAX / DPS_LO) * .01
+#define W_INC_HI (PWM_MAX - PWM_MIN) / (ANGLE_MAX / DPS_HI) * .01
+
+
 //=====[Declaration and initialization of public global objects]===============
 
 AnalogIn mode_dial(A1);
@@ -42,46 +54,135 @@ PwmOut servo(PE_8);
 
 static int md_state = 0;
 static int fd_state = 0;
+static int acc_time_ms = 0;
+
+typedef enum wiperState {
+    W_STOP,
+    W_RISE,
+    W_FALL
+} wiperState_t;
+
+static wiperState_t w_state = W_STOP;
 
 //=====[Declaration and initialization of public global variables]=============
 
 //=====[Declarations (prototypes) of public functions]=========================
 
-void updatePotReading();
+static void updatePotReading();
+
+void initWiperSystem();
+void updateWiperSystem();
 
 //=====[Implementation of global functions]====================================
 
-void updatePotReading() { //LO HI INT OFF, 0 1 2 3
+void initWiperSystem() {
+    servo.period(.02);
+}
+
+static void updatePotReading() { //LO HI INT OFF, 0 1 2 3
+
     float md_r = mode_dial.read();
-    switch (md_state) {
-        case 0:
-            if (md_r > MD_TH1 + MD_HYST) md_state = 1;  
-            break;
-        case 1:
-            if (md_r > MD_TH2 + MD_HYST) md_state = 2;
-            if (md_r < MD_TH1 - MD_HYST) md_state = 0;
-            break;
-        case 2:
-            if (md_r > MD_TH3 + MD_HYST) md_state = 3;
-            if (md_r < MD_TH2 - MD_HYST) md_state = 1;
-            break;
-        case 3:
-            if (md_r < MD_TH3 - MD_HYST) md_state = 2;
-            break;
+    if ((md_state == 0) && (md_r > MD_TH1 + MD_HYST)) {
+        md_state = 1;
+    }  
+    if ((md_state == 1) && (md_r > MD_TH2 + MD_HYST)) {
+        acc_time_ms = 0;
+        md_state = 2;
     }
-    if (md_state != 2) return;
-    float fd_r = mode_dial.read(); //0 1 2, short med long
-    switch (fd_state) {
-        case 0:
-            if (fd_r > FD_TH1 + FD_HYST) md_state = 1;  
-            break;
-        case 1:
-            if (fd_r > FD_TH2 + FD_HYST) md_state = 2;
-            if (fd_r < FD_TH1 - FD_HYST) md_state = 0;
-            break;
-        case 2:
-            if (fd_r < MD_TH3 - MD_HYST) md_state = 2;
-            break;
+    if ((md_state == 1) && (md_r < MD_TH1 - MD_HYST)) {
+        md_state = 0;
+    }
+    if ((md_state == 2) && (md_r > MD_TH3 + MD_HYST)) {
+        md_state = 3;
+    }
+    if ((md_state == 2) && (md_r < MD_TH2 - MD_HYST)) {
+        md_state = 1;
+    }
+    if ((md_state == 3) && (md_r < MD_TH3 - MD_HYST)) {
+        acc_time_ms = 0;
+        md_state = 2;
     }
 
-};
+    float fd_r = mode_dial.read(); //0 1 2, short med long
+
+    if ((fd_state == 0) && (fd_r > FD_TH1 + FD_HYST)) {
+        acc_time_ms = 0;
+        fd_state = 1;
+    }  
+    if ((fd_state == 1) && (fd_r > FD_TH2 + FD_HYST)) {
+        acc_time_ms = 0;
+        fd_state = 2;
+    }
+    if ((fd_state == 1) && (fd_r < FD_TH1 - FD_HYST)) {
+        acc_time_ms = 0;
+        fd_state = 0;
+    }
+    if ((fd_state == 2) && (fd_r < FD_TH2 - FD_HYST)) {
+        acc_time_ms = 0;
+        fd_state = 1;
+    }
+}
+
+void updateWiperSystem() {
+    updatePotReading();
+    if (md_state == 0) {
+        if (w_state == W_RISE) {
+            servo.write(servo + W_INC_LO);
+            if (servo > PWM_MAX) {
+                w_state = W_FALL;
+            }
+        }
+        else {
+            servo.write(servo - W_INC_LO);
+            if (servo < PWM_MIN) {
+                w_state = W_RISE;
+            }
+        }
+    }
+    if (md_state == 1) {
+        if (w_state == W_RISE) {
+            servo.write(servo + W_INC_HI);
+            if (servo > PWM_MAX) {
+                w_state = W_FALL;
+            }
+        }
+        else {
+            servo.write(servo - W_INC_HI);
+            if (servo < PWM_MIN) {
+                w_state = W_RISE;
+            }
+        }
+    }
+    if (md_state == 2) {
+        if (w_state == W_RISE) {
+            servo.write(servo + W_INC_LO);
+            if (servo > PWM_MAX) {
+                w_state = W_FALL;
+            }
+        }
+        else if(w_state == W_FALL) {
+            servo.write(servo - W_INC_LO);
+            if (servo < PWM_MIN) {
+                w_state = W_STOP;
+                acc_time_ms = 0;
+            }
+        } 
+        else {
+            acc_time_ms += 10;
+            if (fd_state == 0 && acc_time_ms >= 3000) {
+                w_state = W_RISE;
+            }
+            if (fd_state == 1 && acc_time_ms >= 6000) {
+                w_state = W_RISE;
+            }
+            if (fd_state == 2 && acc_time_ms >= 8000) {
+                w_state = W_RISE;
+            }
+        }      
+    }
+    if (md_state == 3) {
+        if (servo > PWM_MIN) {
+            servo.write(PWM_MIN);
+        }
+    }
+}

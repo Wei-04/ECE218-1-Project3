@@ -22,8 +22,11 @@
 
 #include "ignition_system.h"
 #include "display_mode.h"
+#include "wiper_system.h"
 
 //=====[Declaration of private defines]========================================
+
+#define SYSTEM_TIME_INCREMENT_MS   10
 
 //=====[Declaration of private data types]=====================================
 
@@ -43,12 +46,17 @@ void systemInit() //our initializations
 {
     ignitionInit();
     displayModeInit();
+<<<<<<< HEAD
+
+=======
+>>>>>>> cbfd3cca8615d5935ab0026a8e7c93de78ad13ed
 }
 
 void systemUpdate() //our update functions which will loop
 {
     engineUpdate();
     displayMode();
+    updateWiperSystem();
     delay(10);
 }
 
