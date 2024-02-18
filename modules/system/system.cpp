@@ -22,8 +22,11 @@
 
 #include "ignition_system.h"
 #include "display_mode.h"
+#include "wiper_system.h"
 
 //=====[Declaration of private defines]========================================
+
+#define SYSTEM_TIME_INCREMENT_MS   10
 
 //=====[Declaration of private data types]=====================================
 
@@ -49,6 +52,10 @@ void systemUpdate() //our update functions which will loop
 {
     engineUpdate();
     displayMode();
+    if (engineUpdate()) {
+        updateWiperSystem();
+    }
+
     delay(10);
 }
 

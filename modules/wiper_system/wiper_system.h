@@ -9,6 +9,10 @@
 
 //=====[Declarations (prototypes) of public functions]=========================
 
+void updateWiperSystem();
+int getMode();
+int getFreq();
+
 //=====[#include guards - end]=================================================
 
 #endif // _WIPER_SYSTEM_H_

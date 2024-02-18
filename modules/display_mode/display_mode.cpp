@@ -49,11 +49,36 @@ void displayMode() //this function updates our display with the current mode and
     displayCharPositionWrite(0, 0); 
     displayStringWrite("Mode:");
     displayCharPositionWrite(6, 0);
-    displayStringWrite("replace"); //replace with function output from wiper system module
+    switch (getMode()) {
+        case 0:
+        displayStringWrite("LO");
+        break;
+        case 1:
+        displayStringWrite("HI");
+        break;
+        case 2:
+        displayStringWrite("INT");
+        break;
+        case 3:
+        displayStringWrite("OFF");
+        break;
+    }
+
+     //replace with function output from wiper system module
     displayCharPositionWrite(0, 1); 
     displayStringWrite("Interval:");
     displayCharPositionWrite(10, 1);
-    displayStringWrite("replace");
+    switch (getFreq()) {
+        case 0:
+        displayStringWrite("SHORT");
+        break;
+        case 1:
+        displayStringWrite("MEDIUM");
+        break;
+        case 2:
+        displayStringWrite("LONG");
+        break;
+    }
 }
 
 //=====[Implementations of private functions]==================================
