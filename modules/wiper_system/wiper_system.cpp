@@ -4,7 +4,7 @@
 * @section genDesc General Description
 *
 * This module should hold control of our windshield wipers on the car. There will be multiple modes of control along with
-* an interval selector. The possible modes include high (HI), low (LO), interval (INT), and OFF. Modes HI and LO will
+* an interval selector. The possible modes include HI, LO, INT, and OFF. Modes HI and LO will
 * spin at 40 and 30 rpm respectively while the INT mode will spin according to the selected interval, being every 3, 6, or 8
 * seconds.
 *

@@ -47,7 +47,10 @@ void systemInit()
 {
     ignitionInit();
     displayModeInit();
+<<<<<<< HEAD
 
+=======
+>>>>>>> cbfd3cca8615d5935ab0026a8e7c93de78ad13ed
 }
 
 void systemUpdate()
@@ -55,7 +58,7 @@ void systemUpdate()
     engineUpdate();
     displayMode();
     updateWiperSystem();
-    delay(SYSTEM_TIME_INCREMENT_MS);
+    delay(10);
 }
 
 //=====[Implementations of private functions]==================================

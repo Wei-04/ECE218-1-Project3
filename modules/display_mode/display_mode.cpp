@@ -40,7 +40,9 @@
 
 void displayModeInit()
 {
-    void displayInit();
+    //displayInit( DISPLAY_TYPE_GLCD_ST7920, DISPLAY_CONNECTION_SPI );
+    //displayModeWrite( );
+    displayInit();
 }
 
 void displayMode()
