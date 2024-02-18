@@ -19,3 +19,17 @@ Changelog
 | Date | Description |
 |:----------:|:-----------------------------------------------|
 | 02/15/2024 | Wrote ReadMe |
+
+
+Ignition System:
+| Specification | Test Result | Comment |
+| Ignition with Driver | Successful ignition | N/A |
+| Ingition without driver | No ignition | N/A |
+| Deignition | Successfully turned off engine | Cannot turn off engine with driver occupying seat |
+
+Wiper System:
+| LO | Motor spins slow | It's slower than expected |
+| HI | Motor is slightly faster | N/A |
+| INT 3 | Motor takes a long interval to spin | Its long |
+| INT 6 | Motor takes an even longer interval to spin | Expected behavior based on last result |
+| INT 8 | Motor takes longer interval than INT 6 | N/A |
