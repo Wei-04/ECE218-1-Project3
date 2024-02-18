@@ -26,21 +26,21 @@
 
 //=====[Defines]===============================================================
 
-#define MD_TH1  0.25 //LO
-#define MD_TH2  0.50 //HI
-#define MD_TH3  0.75 //INT
-#define MD_HYST 0.05 //OFF
+#define MD_TH1  0.25 //MODE DIAL THRESHOLD 1
+#define MD_TH2  0.50 //MODE DIAL THRESHOLD 2
+#define MD_TH3  0.75 //MODE DIAL THRESHOLD 3
+#define MD_HYST 0.05 // MODE DIAL HYSTERYSIS
 
-#define FD_TH1  0.333 //SHORT
-#define FD_TH2  0.667 //MEDIUM
-#define FD_HYST 0.05 //LONG
+#define FD_TH1  0.333 //FREQ DIAL THRESHOLD 1
+#define FD_TH2  0.667 //FREQ DIAL THRESHOLD 2
+#define FD_HYST 0.05 //FREQ DIAL HYSTERYSIS
 
-#define PWM_MIN 0.05
-#define PWM_MAX 0.09
-#define ANGLE_MAX 67.0
+#define PWM_MIN 0.05 //MIN TRAVEL (FLAT)
+#define PWM_MAX 0.09 //MAX MOTION
+#define ANGLE_MAX 67.0 // VALUE IN DEG OF MAX ANGLE
 
-#define DPS_LO 120.0
-#define DPS_HI 180.0
+#define DPS_LO 120.0 //DEGpSEC OF LOW-SPEED TRAVEL
+#define DPS_HI 180.0 //DEGpSEC OF HIGH-SPEED TRAVEL
 
 #define W_INC_LO (PWM_MAX - PWM_MIN) / (ANGLE_MAX / DPS_LO) * .04
 #define W_INC_HI (PWM_MAX - PWM_MIN) / (ANGLE_MAX / DPS_HI) * .04
@@ -78,19 +78,19 @@ int getFreq();
 
 //=====[Implementation of global functions]====================================
 
-void initWiperSystem() {
+void initWiperSystem() { //Initiates servo
     servo.write(PWM_MIN);
     servo.period(.02);
 }
 
-static void updatePotReading() { //LO HI INT OFF, 0 1 2 3
+static void updatePotReading() { //stores readings of both dials as integers in md_state and fd_state
 
-    float md_r = mode_dial.read();
+    float md_r = mode_dial.read(); // read analog input, determine if state should transition
     if ((md_state == 0) && (md_r > MD_TH1 + MD_HYST)) {
         md_state = 1;
     }  
     if ((md_state == 1) && (md_r > MD_TH2 + MD_HYST)) {
-        acc_time_ms = 0;
+        acc_time_ms = 0; // for transitions entering the INT mode, the accumulating timer is reset to 0
         md_state = 2;
     }
     if ((md_state == 1) && (md_r < MD_TH1 - MD_HYST)) {
@@ -107,7 +107,7 @@ static void updatePotReading() { //LO HI INT OFF, 0 1 2 3
         md_state = 2;
     }
 
-    float fd_r = freq_dial.read(); //0 1 2, short med long
+    float fd_r = freq_dial.read(); //same as mode dial implementation, all transitions reset the timer.
 
     if ((fd_state == 0) && (fd_r > FD_TH1 + FD_HYST)) {
         acc_time_ms = 0;
@@ -127,15 +127,15 @@ static void updatePotReading() { //LO HI INT OFF, 0 1 2 3
     }
 }
 
-void updateWiperSystem() {
-    if (!engineUpdate()) {
+void updateWiperSystem() { //called periodically by system loop to drive the wipers
+    if (!engineUpdate()) { // sets wipers to min if engine is off and mode isn't INT
         if (md_state != 2) {
             servo.write(PWM_MIN);
         }
         return;
     }
     updatePotReading();
-    if (md_state == 0) {
+    if (md_state == 0) { // LO
         if (w_state == W_RISE) {
             servo.write(servo + W_INC_LO);
             if (servo > PWM_MAX) {
@@ -149,7 +149,7 @@ void updateWiperSystem() {
             }
         }
     }
-    if (md_state == 1) {
+    if (md_state == 1) { // HI
         if (w_state == W_RISE) {
             servo.write(servo + W_INC_HI);
             if (servo > PWM_MAX) {
@@ -163,7 +163,7 @@ void updateWiperSystem() {
             }
         }
     }
-    if (md_state == 2) {
+    if (md_state == 2) { // INT - after the wiper falls, it waits in stop mode until the timer reaches the needed time
         if (w_state == W_RISE) {
             servo.write(servo + W_INC_LO);
             if (servo > PWM_MAX) {
