@@ -46,17 +46,16 @@ void systemInit() //our initializations
 {
     ignitionInit();
     displayModeInit();
-<<<<<<< HEAD
-
-=======
->>>>>>> cbfd3cca8615d5935ab0026a8e7c93de78ad13ed
 }
 
 void systemUpdate() //our update functions which will loop
 {
     engineUpdate();
     displayMode();
-    updateWiperSystem();
+    if (engineUpdate()) {
+        updateWiperSystem();
+    }
+
     delay(10);
 }
 
