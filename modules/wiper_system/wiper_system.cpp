@@ -22,6 +22,7 @@
 #include "mbed.h" //library imports
 #include "arm_book_lib.h"
 #include "system.h"
+#include "ignition_system.h"
 
 //=====[Defines]===============================================================
 
@@ -35,7 +36,7 @@
 #define FD_HYST 0.05 //LONG
 
 #define PWM_MIN 0.05
-#define PWM_MAX 0.08
+#define PWM_MAX 0.09
 #define ANGLE_MAX 67.0
 
 #define DPS_LO 120.0
@@ -106,7 +107,7 @@ static void updatePotReading() { //LO HI INT OFF, 0 1 2 3
         md_state = 2;
     }
 
-    float fd_r = mode_dial.read(); //0 1 2, short med long
+    float fd_r = freq_dial.read(); //0 1 2, short med long
 
     if ((fd_state == 0) && (fd_r > FD_TH1 + FD_HYST)) {
         acc_time_ms = 0;
@@ -127,6 +128,12 @@ static void updatePotReading() { //LO HI INT OFF, 0 1 2 3
 }
 
 void updateWiperSystem() {
+    if (!engineUpdate()) {
+        if (md_state != 2) {
+            servo.write(PWM_MIN);
+        }
+        return;
+    }
     updatePotReading();
     if (md_state == 0) {
         if (w_state == W_RISE) {
@@ -172,13 +179,13 @@ void updateWiperSystem() {
         } 
         else {
             acc_time_ms += 10;
-            if (fd_state == 0 && acc_time_ms >= 3000) {
+            if (fd_state == 0 && acc_time_ms >= 375) {
                 w_state = W_RISE;
             }
-            if (fd_state == 1 && acc_time_ms >= 6000) {
+            if (fd_state == 1 && acc_time_ms >= 750) {
                 w_state = W_RISE;
             }
-            if (fd_state == 2 && acc_time_ms >= 8000) {
+            if (fd_state == 2 && acc_time_ms >= 1000) {
                 w_state = W_RISE;
             }
         }      
