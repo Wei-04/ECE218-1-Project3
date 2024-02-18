@@ -20,14 +20,19 @@ Changelog
 |:----------:|:-----------------------------------------------|
 | 02/15/2024 | Wrote ReadMe |
 
+Testing:
+| Specification | Test Result | Comment |
 
 Ignition System:
-| Specification | Test Result | Comment |
+| Specification | Test Result |
+|:----------:|:-----------------------------------------------|
 | Ignition with Driver | Successful ignition | N/A |
 | Ingition without driver | No ignition | N/A |
 | Deignition | Successfully turned off engine | Cannot turn off engine with driver occupying seat |
 
 Wiper System:
+| Specification | Test Result | 
+|:----------:|:-----------------------------------------------|
 | LO | Motor spins slow | It's slower than expected |
 | HI | Motor is slightly faster | N/A |
 | INT 3 | Motor takes a long interval to spin | Its long |
