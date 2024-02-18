@@ -1,4 +1,4 @@
-/*! @mainpage Ignition System Control
+/*! @mainpage Display System Control
 * @date Wednesday, February 14, 2024
 * @authors Harmon Cleary, Weiheng He
 * @section genDesc General Description
@@ -9,7 +9,8 @@
 * | Date | Description |
 * |:----------:|:-----------------------------------------------|
 * | 02/14/2024 | First version of our display modes |
-* 
+* | 02/15/2024 | Tried troubleshooting module, WIP |
+* | 02/17/2024 | Changed display modules from ex 7.2 to 6.1 |
 *
 */
 
@@ -38,16 +39,14 @@
 
 //=====[Implementations of public functions]===================================
 
-void displayModeInit()
+void displayModeInit() //initializes our display
 {
-    //displayInit( DISPLAY_TYPE_GLCD_ST7920, DISPLAY_CONNECTION_SPI );
-    //displayModeWrite( );
     displayInit();
 }
 
-void displayMode()
+void displayMode() //this function updates our display with the current mode and interval
 {
-    displayCharPositionWrite(0, 0);
+    displayCharPositionWrite(0, 0); 
     displayStringWrite("Mode:");
     displayCharPositionWrite(6, 0);
     displayStringWrite("replace"); //replace with function output from wiper system module

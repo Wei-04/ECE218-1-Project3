@@ -1,11 +1,10 @@
-/*! @mainpage Ignition System Control
+/*! @mainpage Overall System Control
 * @date Wednesday, February 14, 2024
 * @authors Harmon Cleary, Weiheng He
 * @section genDesc General Description
 *
-* This module should be in charge of and control the ignition system of the car. This includes only allowing ignition
-* when the driver is occupying his seat, and keeping the engine on even after the driver has left. Finally, the
-* current state of the system will be represented by the blue LED on the Nucleo Board.
+* This module will envoke all the other modules in order to make a fully working embedded system. This
+* will be the module called upon in our main.
 *
 * @section changelog Changelog
 * | Date | Description |
@@ -43,7 +42,7 @@
 
 //=====[Implementations of public functions]===================================
 
-void systemInit()
+void systemInit() //our initializations
 {
     ignitionInit();
     displayModeInit();
@@ -53,7 +52,7 @@ void systemInit()
 >>>>>>> cbfd3cca8615d5935ab0026a8e7c93de78ad13ed
 }
 
-void systemUpdate()
+void systemUpdate() //our update functions which will loop
 {
     engineUpdate();
     displayMode();

@@ -10,8 +10,8 @@
 * @section changelog Changelog
 * | Date | Description |
 * |:----------:|:-----------------------------------------------|
-* | 02/14/2024 | First version of ignition system |
-* 
+* | 02/14/2024 | First version of system |
+* | 02/15/2024 | Added display module |
 *
 */
 
