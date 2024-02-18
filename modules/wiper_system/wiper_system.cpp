@@ -35,14 +35,14 @@
 #define FD_HYST 0.05 //LONG
 
 #define PWM_MIN 0.05
-#define PWM_MAX 0.1
+#define PWM_MAX 0.08
 #define ANGLE_MAX 67.0
 
 #define DPS_LO 120.0
 #define DPS_HI 180.0
 
-#define W_INC_LO (PWM_MAX - PWM_MIN) / (ANGLE_MAX / DPS_LO) * .01
-#define W_INC_HI (PWM_MAX - PWM_MIN) / (ANGLE_MAX / DPS_HI) * .01
+#define W_INC_LO (PWM_MAX - PWM_MIN) / (ANGLE_MAX / DPS_LO) * .04
+#define W_INC_HI (PWM_MAX - PWM_MIN) / (ANGLE_MAX / DPS_HI) * .04
 
 
 //=====[Declaration and initialization of public global objects]===============
@@ -72,10 +72,13 @@ static void updatePotReading();
 
 void initWiperSystem();
 void updateWiperSystem();
+int getMode();
+int getFreq();
 
 //=====[Implementation of global functions]====================================
 
 void initWiperSystem() {
+    servo.write(PWM_MIN);
     servo.period(.02);
 }
 
@@ -185,4 +188,11 @@ void updateWiperSystem() {
             servo.write(PWM_MIN);
         }
     }
+}
+
+int getMode() {
+    return md_state;
+}
+int getFreq() {
+    return fd_state;
 }
