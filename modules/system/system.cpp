@@ -52,9 +52,7 @@ void systemUpdate() //our update functions which will loop
 {
     engineUpdate();
     displayMode();
-    if (engineUpdate()) {
-        updateWiperSystem();
-    }
+    updateWiperSystem();
 
     delay(10);
 }
