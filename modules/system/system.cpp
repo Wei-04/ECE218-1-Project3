@@ -45,8 +45,9 @@
 
 void systemInit()
 {
-    void ignitionInit();
-    void displayModeInit();
+    ignitionInit();
+    displayModeInit();
+
 }
 
 void systemUpdate()

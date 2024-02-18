@@ -36,7 +36,7 @@
 
 #define PWM_MIN 0.05
 #define PWM_MAX 0.1
-#define ANGLE_MAX 67
+#define ANGLE_MAX 67.0
 
 #define DPS_LO 120.0
 #define DPS_HI 180.0
